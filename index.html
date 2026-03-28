@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KSI: Kwame's Sourcing Intelligence</title>
+<meta name="description" content="Professional Sourcing & Inspection Intelligence — Offline First">
+<meta name="theme-color" content="#0B0E14">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KSI">
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+/* ===== VARIABLES ===== */
+:root{
+  --font:-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;
+  --bg:#0B0E14;--bg2:#1A1D23;--border:#2A2D35;
+  --gold:#D4AF37;--gold-l:#E5C76B;--gold-d:#B8972E;
+  --blue:#007BFF;--blue-l:#3C9EFF;
+  --red:#dc2626;--green:#22c55e;
+}
+
+/* ===== BASE ===== */
+body{font-family:var(--font);background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;
+  padding-top:env(safe-area-inset-top);padding-bottom:calc(80px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* ===== LAYOUT ===== */
+.mw{max-width:640px;margin:0 auto;padding:0 16px}
+.flex{display:flex}.aic{align-items:center}.jb{justify-content:space-between}
+.g2{gap:8px}.g3{gap:12px}.mt2{margin-top:8px}.mt3{margin-top:12px}
+.mb2{margin-bottom:8px}.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}.mb6{margin-bottom:24px}
+.wf{width:100%}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* ===== TYPOGRAPHY ===== */
+.tg{color:var(--gold)}.tr{color:var(--red)}.tb{color:var(--blue)}.tm{color:#9CA3AF}
+.tgg{background:linear-gradient(135deg,#D4AF37,#F6E086,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.xs{font-size:11px}.sm{font-size:13px}.base{font-size:15px}.lg{font-size:18px}
+.bold{font-weight:700}.semi{font-weight:600}.upper{text-transform:uppercase;letter-spacing:.08em}
+
+/* ===== GLASS CARD ===== */
+.card{background:rgba(26,29,35,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(212,175,55,.15);border-radius:16px}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.asu{animation:slideUp .35s ease-out forwards}
+
+/* ===== INPUTS ===== */
+input,textarea,select{background:var(--bg)!important;border:1px solid var(--border)!important;
+  color:#fff!important;border-radius:12px;transition:border-color .2s,box-shadow .2s;
+  font-family:var(--font);font-size:14px;width:100%;padding:11px 14px}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)!important;
+  box-shadow:0 0 0 2px rgba(212,175,55,.2)!important;outline:none!important}
+input::placeholder,textarea::placeholder{color:#4B5563}
+
+/* ===== BUTTONS ===== */
+.btn{cursor:pointer;border:none;font-family:var(--font);font-weight:600;transition:all .18s;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:scale(.97)}
+.btn-p{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--bg);
+  border-radius:14px;padding:12px 22px;font-size:14px;box-shadow:0 4px 14px rgba(212,175,55,.3)}
+.btn-g{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)!important;
+  color:#fff;border-radius:11px;padding:9px 14px;font-size:13px}
+.btn-g:hover{background:rgba(255,255,255,.1)}
+.btn-ic{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)!important;
+  color:#9CA3AF;border-radius:11px;width:38px;height:38px;font-size:16px;flex-shrink:0}
+.btn-d{background:rgba(220,38,38,.12);color:#ef4444;border-radius:9px;
+  padding:7px 10px;font-size:13px;border:none!important}
+.btn-full{width:100%;padding:14px;font-size:15px;border-radius:14px}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.pill-r{background:rgba(220,38,38,.15);color:#ef4444}
+.pill-g{background:rgba(34,197,94,.15);color:#22c55e}
+.pill-b{background:rgba(0,123,255,.15);color:var(--blue-l)}
+.pill-o{background:rgba(212,175,55,.15);color:var(--gold-l)}
+
+/* ===== HEADER ===== */
+header{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;
+  color:var(--bg);box-shadow:0 4px 12px rgba(212,175,55,.25);flex-shrink:0}
+.logo-txt{margin-left:10px}
+.logo-txt h1{font-size:17px;font-weight:800}
+.logo-txt p{font-size:9px;color:#6B7280;letter-spacing:.15em}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.sdot.off{background:var(--red);animation:pulse 2s infinite}
+
+/* ===== NAV ===== */
+nav{position:fixed;bottom:8px;left:0;right:0;z-index:50;padding:0 12px}
+.nav-in{max-width:500px;margin:0 auto;background:rgba(26,29,35,.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(212,175,55,.2);border-radius:22px;
+  display:flex;justify-content:space-around;padding:6px 4px}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 4px;border-radius:16px;cursor:pointer;
+  color:#6B7280;transition:all .2s;background:none;border:none;font-family:var(--font)}
+.nb.active{color:var(--gold);background:rgba(212,175,55,.1)}
+.nb svg{width:20px;height:20px}
+.nb span{font-size:9px;font-weight:600;letter-spacing:.03em}
+
+/* ===== TABS ===== */
+.tab{display:none;padding:16px 0 8px}
+.tab.active{display:block}
+
+/* ===== STATS ===== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat{text-align:center;padding:14px 8px}
+.stat .n{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.stat .l{font-size:9px;color:#6B7280;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+
+/* ===== CHIPS ===== */
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:600;
+  cursor:pointer;transition:all .2s;border:1px solid var(--border);color:#6B7280;background:var(--bg2)}
+.chip.active{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+
+/* ===== SUPPLIER CARD ===== */
+.sc{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;margin-bottom:10px;transition:border-color .2s}
+.sc:hover{border-color:rgba(212,175,55,.35)}
+.sc.flag{border-color:rgba(220,38,38,.5)!important;background:rgba(220,38,38,.07)!important}
+.si{flex:1;cursor:pointer}
+.sn{font-weight:600;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.stags{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.tag{font-size:9px;padding:3px 8px;border-radius:20px;font-weight:600;letter-spacing:.05em}
+.tag-c{background:rgba(26,29,35,1);color:#9CA3AF;border:1px solid var(--border)}
+.tag-k{background:rgba(0,123,255,.15);color:var(--blue-l)}
+.tag-a{background:rgba(212,175,55,.12);color:var(--gold)}
+.snote{font-size:11px;color:#6B7280;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px}
+
+/* ===== CHECKLIST ===== */
+.ci{display:flex;align-items:center;padding:11px 12px;background:rgba(11,14,20,.5);
+  border-radius:11px;margin-bottom:7px;cursor:pointer;border-left:3px solid transparent;transition:all .18s}
+.ci.ck{border-left-color:var(--gold);background:rgba(212,175,55,.06)}
+.cbox{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;
+  margin-right:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.ci.ck .cbox{background:var(--gold);border-color:var(--gold)}
+.ci.ck .cbox::after{content:'✓';color:var(--bg);font-size:13px;font-weight:800}
+
+/* ===== TOGGLE ===== */
+.toggle{position:relative;width:50px;height:26px;background:var(--border);
+  border-radius:13px;cursor:pointer;transition:background .3s;flex-shrink:0}
+.toggle.on{background:var(--red)}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;
+  border-radius:50%;top:3px;left:3px;transition:transform .28s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.toggle.on::after{transform:translateX(24px)}
+
+/* ===== PROGRESS ===== */
+.pbar{background:var(--border);border-radius:99px;height:4px;overflow:hidden;margin-top:8px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:99px;transition:width .4s ease}
+
+/* ===== PHOTO UPLOAD ===== */
+.uarea{width:100%;height:110px;border-radius:14px;border:2px dashed var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .2s;overflow:hidden;background:var(--bg)}
+.uarea:hover{border-color:var(--gold)}
+.uarea img{width:100%;height:100%;object-fit:cover}
+.uphint{text-align:center;color:#6B7280;pointer-events:none;font-size:11px}
+.uphint .ui{font-size:24px;margin-bottom:4px}
+
+/* ===== AUDIT PHOTO STRIP ===== */
+.photo-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.photo-strip::-webkit-scrollbar{display:none}
+.photo-thumb{width:72px;height:72px;border-radius:10px;overflow:hidden;
+  flex-shrink:0;position:relative;background:var(--bg2)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-thumb .del-ph{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.7);
+  color:#fff;border:none;border-radius:50%;width:18px;height:18px;
+  font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.add-photo{width:72px;height:72px;border-radius:10px;border:2px dashed var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;color:#6B7280;font-size:10px;gap:2px;background:var(--bg)}
+.add-photo span:first-child{font-size:22px}
+
+/* ===== CARDS GRID ===== */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:500px){.cgrid{grid-template-columns:repeat(3,1fr)}}
+.bc{border-radius:14px;overflow:hidden}
+.bc-img{height:90px;background:var(--bg);display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative}
+.bc-img img{width:100%;height:100%;object-fit:cover}
+.bc-body{padding:10px 12px 12px}
+.bc-body p:first-child{font-size:12px;font-weight:600;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bc-body p:last-child{font-size:10px;color:var(--gold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bc-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.65);color:#fff;
+  border:none;border-radius:50%;width:22px;height:22px;font-size:11px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.bc:hover .bc-del,.bc:focus-within .bc-del{opacity:1}
+
+/* ===== CURRENCY ===== */
+.cdisplay{text-align:center;padding:24px 20px 16px}
+.cdisplay .bignum{font-size:42px;font-weight:800}
+.cres-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.cres{background:var(--bg);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--border)}
+.cres .ccy{font-size:10px;color:#6B7280;font-weight:600;letter-spacing:.1em;margin-bottom:3px}
+.cres .amt{font-size:20px;font-weight:700}
+.cres-extra{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px}
+.cres-sm{background:var(--bg);border-radius:11px;padding:10px 8px;text-align:center;border:1px solid var(--border)}
+.cres-sm .ccy{font-size:9px;color:#6B7280;margin-bottom:2px}
+.cres-sm .amt{font-size:15px;font-weight:700}
+
+/* ===== HISTORY ===== */
+.hi{padding:14px 16px;margin-bottom:10px}
+.hi.flag{border-color:rgba(220,38,38,.5)!important;background:rgba(220,38,38,.07)!important}
+.hdr2{display:flex;justify-content:space-between;align-items:flex-start}
+.sbadge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;
+  background:rgba(212,175,55,.15);color:var(--gold);margin-top:3px;display:inline-block}
+.sbadge.good{background:rgba(34,197,94,.15);color:#22c55e}
+.sbadge.bad{background:rgba(220,38,38,.15);color:#ef4444}
+
+/* ===== MODALS ===== */
+.mo{position:fixed;inset:0;z-index:100;display:none}
+.mo.open{display:block}
+.mo-bg{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
+.ms{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);
+  border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom));
+  max-height:92vh;overflow-y:auto;animation:slideUp .3s ease-out}
+.mh{width:40px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 18px}
+.mt-modal{font-size:18px;font-weight:700;margin-bottom:16px}
+.fl{margin-bottom:12px}
+.flbl{font-size:11px;font-weight:600;color:#9CA3AF;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:6px;display:block}
+
+/* ===== SETTINGS ===== */
+.sp{position:fixed;top:0;right:0;bottom:0;z-index:100;width:min(340px,95vw);
+  background:var(--bg2);padding:20px;overflow-y:auto;display:none;
+  border-left:1px solid var(--border);animation:fadeIn .2s ease}
+.sp.open{display:block}
+
+/* ===== TOAST ===== */
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:200;
+  padding:10px 18px;background:rgba(26,29,35,.95);border-radius:12px;
+  font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;
+  border:1px solid rgba(212,175,55,.2);opacity:0;pointer-events:none;
+  transition:opacity .3s;white-space:nowrap}
+#toast.show{opacity:1}
+#toast.err{border-color:rgba(220,38,38,.4)}
+
+/* ===== EMPTY STATE ===== */
+.empty{text-align:center;padding:48px 20px}
+.empty .ei{font-size:40px;opacity:.15;display:block;margin-bottom:12px}
+.empty p{color:#6B7280;font-size:14px}
+
+/* ===== OFFLINE BANNER ===== */
+.ob{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);
+  border-radius:12px;padding:10px 14px;margin-bottom:14px;
+  font-size:12px;color:#fca5a5;display:none;align-items:center;gap:8px}
+.ob.show{display:flex}
+
+/* ===== STORAGE BAR ===== */
+.sbar{margin-top:6px}
+.slbl{display:flex;justify-content:space-between;font-size:11px;color:#6B7280;margin-bottom:4px}
+
+/* ===== SECTION HEADER ===== */
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.st{font-size:15px;font-weight:600;color:#D1D5DB}
+
+/* ===== INSTALL NUDGE ===== */
+.nudge{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom));left:12px;right:12px;z-index:60;
+  background:linear-gradient(135deg,#1A1D23,#1f2330);border:1px solid rgba(212,175,55,.4);
+  border-radius:18px;padding:14px 16px;display:none;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);animation:slideUp .4s ease-out}
+.nudge.show{display:flex}
+.nudge-ic{width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--bg)}
+.nudge-txt{flex:1}
+.nudge-txt p:first-child{font-size:13px;font-weight:700}
+.nudge-txt p:last-child{font-size:11px;color:#9CA3AF;margin-top:1px}
+
+/* ===== INSTALL GUIDE ===== */
+.itab{flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;
+  text-align:center;transition:all .2s;background:var(--bg);border:1px solid var(--border);color:#6B7280}
+.itab.active{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.ipane{display:none}
+.ipane.active{display:block}
+.srow{display:flex;align-items:flex-start;gap:12px;padding:12px;
+  background:rgba(11,14,20,.5);border-radius:12px;margin-bottom:8px}
+.snum{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:var(--gold);
+  color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.stxt p:first-child{font-size:13px;font-weight:600}
+.stxt p:last-child{font-size:11px;color:#9CA3AF;margin-top:2px}
+
+/* ===== QR ===== */
+.qrwrap{background:#fff;border-radius:16px;padding:16px;display:inline-block;margin:0 auto}
+#qrCanvas{display:block}
+.qrurl{font-size:11px;color:#9CA3AF;text-align:center;margin-top:10px;word-break:break-all;padding:0 4px}
+
+/* ===== ONBOARDING OVERLAY ===== */
+.onb{position:fixed;inset:0;z-index:200;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;animation:fadeIn .4s ease}
+.onb-step{display:none;text-align:center;max-width:380px;width:100%}
+.onb-step.active{display:flex;flex-direction:column;align-items:center}
+.onb-icon{font-size:64px;margin-bottom:20px}
+.onb-dots{display:flex;gap:6px;margin-top:28px}
+.onb-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s}
+.onb-dot.active{background:var(--gold);width:24px;border-radius:4px}
+.onb-actions{display:flex;gap:10px;margin-top:24px;width:100%}
+
+/* ===== SHARE SUPPLIER ===== */
+.share-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;
+  padding:12px;font-size:11px;color:#9CA3AF;word-break:break-all;
+  max-height:120px;overflow-y:auto;font-family:monospace;margin-top:8px}
+
+/* ===== CUSTOM CHECKLIST ===== */
+.custom-ci{display:flex;align-items:center;gap:8px;padding:8px 10px;
+  background:rgba(11,14,20,.5);border-radius:10px;margin-bottom:6px}
+.custom-ci span{flex:1;font-size:13px}
+.custom-ci button{background:none;border:none;color:#ef4444;cursor:pointer;font-size:14px;padding:2px 4px}
+
+/* ===== AGENT BADGE ===== */
+.agent-badge{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);
+  border-radius:20px;padding:3px 10px;font-size:11px;color:var(--gold-l)}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING OVERLAY -->
+<div id="onboarding" class="onb" style="display:none;">
+  <div id="onb-0" class="onb-step active">
+    <div class="onb-icon">👋</div>
+    <h2 style="font-size:24px;font-weight:800;margin-bottom:12px;">Welcome to KSI</h2>
+    <p style="color:#9CA3AF;font-size:14px;line-height:1.6;">Your offline sourcing intelligence tool — built for factory floors, markets, and trade shows across China.</p>
+    <div class="onb-dots">
+      <div class="onb-dot active"></div><div class="onb-dot"></div><div class="onb-dot"></div><div class="onb-dot"></div>
+    </div>
+    <div class="onb-actions"><button class="btn btn-p btn-full" onclick="onbNext()">Get Started →</button></div>
+  </div>
+  <div id="onb-1" class="onb-step">
+    <div class="onb-icon">👤</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;">First, who are you?</h2>
+    <p style="color:#9CA3AF;font-size:13px;margin-bottom:20px;">Your name appears on every audit report you create.</p>
+    <input type="text" id="onbName" placeholder="Your full name" style="text-align:center;font-size:16px;font-weight:600;">
+    <div class="mt3" style="width:100%;">
+      <label class="flbl">Your Home Currency</label>
+      <select id="onbCurrency" style="font-size:15px;font-weight:600;text-align:center;">
+        <option value="GHS">🇬🇭 Ghana — GHS</option>
+        <option value="NGN">🇳🇬 Nigeria — NGN</option>
+        <option value="KES">🇰🇪 Kenya — KES</option>
+        <option value="ZAR">🇿🇦 South Africa — ZAR</option>
+        <option value="ETB">🇪🇹 Ethiopia — ETB</option>
+        <option value="TZS">🇹🇿 Tanzania — TZS</option>
+        <option value="XOF">🌍 West Africa — XOF</option>
+        <option value="EGP">🇪🇬 Egypt — EGP</option>
+        <option value="UGX">🇺🇬 Uganda — UGX</option>
+        <option value="RWF">🇷🇼 Rwanda — RWF</option>
+        <option value="USD">🇺🇸 USA — USD</option>
+        <option value="EUR">🇪🇺 Europe — EUR</option>
+        <option value="GBP">🇬🇧 UK — GBP</option>
+      </select>
+    </div>
+    <div class="onb-dots mt3">
+      <div class="onb-dot"></div><div class="onb-dot active"></div><div class="onb-dot"></div><div class="onb-dot"></div>
+    </div>
+    <div class="onb-actions">
+      <button class="btn btn-g" onclick="onbBack()" style="flex:1;">← Back</button>
+      <button class="btn btn-p" onclick="onbNext()" style="flex:2;">Continue →</button>
+    </div>
+  </div>
+  <div id="onb-2" class="onb-step">
+    <div class="onb-icon">🏭</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;">Add suppliers, run audits</h2>
+    <p style="color:#9CA3AF;font-size:13px;line-height:1.6;">Add a supplier → KSI generates a custom checklist based on their product type. Fill it in during your factory visit, flag issues, capture prices.</p>
+    <div class="onb-dots mt3">
+      <div class="onb-dot"></div><div class="onb-dot"></div><div class="onb-dot active"></div><div class="onb-dot"></div>
+    </div>
+    <div class="onb-actions">
+      <button class="btn btn-g" onclick="onbBack()" style="flex:1;">← Back</button>
+      <button class="btn btn-p" onclick="onbNext()" style="flex:2;">Got it →</button>
+    </div>
+  </div>
+  <div id="onb-3" class="onb-step">
+    <div class="onb-icon">📵</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;">Works offline — always</h2>
+    <p style="color:#9CA3AF;font-size:13px;line-height:1.6;">Everything saves to your phone. No internet needed on the factory floor. Install it to your home screen for the full app experience.</p>
+    <div class="onb-dots mt3">
+      <div class="onb-dot"></div><div class="onb-dot"></div><div class="onb-dot"></div><div class="onb-dot active"></div>
+    </div>
+    <div class="onb-actions">
+      <button class="btn btn-g" onclick="onbBack()" style="flex:1;">← Back</button>
+      <button class="btn btn-p" onclick="finishOnboarding()" style="flex:2;">Let's Go 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr mw">
+    <div class="flex aic">
+      <div class="logo">K</div>
+      <div class="logo-txt">
+        <h1 class="tgg">KSI</h1>
+        <p class="upper">Sourcing Intelligence</p>
+      </div>
+    </div>
+    <div class="flex aic g2">
+      <div id="sdot" class="sdot"></div>
+      <span id="stxt" style="font-size:10px;color:#6B7280;"></span>
+      <button class="btn btn-ic" onclick="openSettings()">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="mw" style="padding-top:8px;">
+
+  <!-- SUPPLIERS TAB -->
+  <div id="tab-home" class="tab active anim-slide-up">
+    <div id="ob-banner" class="ob"><span>📵</span> Offline — all data saved on device</div>
+
+    <div style="position:relative;margin-bottom:10px;">
+      <input type="text" id="searchInput" placeholder="Search suppliers, cities, products…" oninput="renderSuppliers()" style="padding-left:38px;">
+      <span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;">🔍</span>
+    </div>
+    <div id="cityChips" class="chips"></div>
+
+    <div class="stats mb4">
+      <div class="card stat"><div class="n tg" id="statTotal">0</div><div class="l">Suppliers</div></div>
+      <div class="card stat"><div class="n tr" id="statFlags">0</div><div class="l">Red Flags</div></div>
+      <div class="card stat"><div class="n tb" id="statAudits">0</div><div class="l">Audits</div></div>
+    </div>
+
+    <div class="sh">
+      <span class="st">Suppliers</span>
+      <button class="btn btn-g" onclick="openAddSupplier()">+ Add New</button>
+    </div>
+    <div id="supplierList"></div>
+  </div>
+
+  <!-- AUDIT TAB -->
+  <div id="tab-audit" class="tab">
+    <div class="asu">
+      <div class="flex aic g3 mb4">
+        <button class="btn btn-ic" onclick="switchTab('home')">←</button>
+        <div>
+          <h2 class="bold lg">New Audit</h2>
+          <p class="sm tm" id="auditSupName">Select a supplier to begin</p>
+        </div>
+      </div>
+      <form id="auditForm">
+        <input type="hidden" id="auditSupplierId">
+
+        <!-- Location -->
+        <div class="card mb3" style="padding:16px;">
+          <div class="flex aic jb mb3">
+            <span class="sm semi" style="color:#D1D5DB;">Location & Time</span>
+            <button type="button" class="btn btn-g xs" onclick="captureGPS()">📍 GPS</button>
+          </div>
+          <div class="grid2 mb2">
+            <input type="text" id="auditDate" readonly placeholder="Date">
+            <input type="text" id="auditTime" readonly placeholder="Time">
+          </div>
+          <input type="text" id="auditGPS" placeholder="GPS Coordinates">
+        </div>
+
+        <!-- Checklist -->
+        <div class="card mb3" style="padding:16px;">
+          <div class="flex aic jb mb3">
+            <span class="sm semi tg">Checklist</span>
+            <span id="checkProg" class="xs tm">0 / 0</span>
+          </div>
+          <div id="checkCont"><p class="sm tm" style="font-style:italic;">Select a supplier to generate checklist.</p></div>
+          <div class="pbar mt2"><div id="pFill" class="pfill" style="width:0%"></div></div>
+
+          <!-- Custom checklist items -->
+          <div id="customChecksWrap" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+            <p class="xs tm mb2">Custom items for this supplier:</p>
+            <div id="customChecksList"></div>
+            <div class="flex g2 mt2">
+              <input type="text" id="newCheckInput" placeholder="Add custom check…" style="font-size:13px;">
+              <button type="button" class="btn btn-g" style="flex-shrink:0;padding:8px 12px;" onclick="addCustomCheck()">+ Add</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-g wf mt3 xs" onclick="toggleCustomChecks()">
+            <span id="customToggleLbl">＋ Add custom checklist items</span>
+          </button>
+        </div>
+
+        <!-- Audit Photos (NEW) -->
+        <div class="card mb3" style="padding:16px;">
+          <div class="flex aic jb mb3">
+            <span class="sm semi" style="color:#D1D5DB;">Audit Photos</span>
+            <span class="xs tm" id="photoCount">0 photos</span>
+          </div>
+          <div class="photo-strip" id="auditPhotoStrip">
+            <div class="add-photo" onclick="document.getElementById('auditPhotoInput').click()">
+              <span>📷</span><span>Add</span>
+            </div>
+          </div>
+          <input type="file" id="auditPhotoInput" style="display:none;" accept="image/*" capture="environment" onchange="addAuditPhoto(this)">
+        </div>
+
+        <!-- Notes -->
+        <div class="card mb3" style="padding:16px;">
+          <label class="flbl">Audit Notes</label>
+          <textarea id="auditNotes" rows="3" placeholder="Observations, prices discussed, samples seen…" style="resize:none;"></textarea>
+        </div>
+
+        <!-- Price -->
+        <div class="card mb3" style="padding:16px;">
+          <label class="flbl">Price Quoted (RMB ¥)</label>
+          <input type="number" id="auditPrice" placeholder="e.g. 3500" step="0.01">
+          <div id="auditPriceConv" style="display:none;margin-top:8px;"></div>
+        </div>
+
+        <!-- Red Flag -->
+        <div class="card mb4" style="padding:16px;border-color:rgba(220,38,38,.3);">
+          <div class="flex aic jb">
+            <div>
+              <p class="semi tr" style="font-size:14px;">⚑ Red Flag Warning</p>
+              <p class="xs tm">Toggle if critical issues found</p>
+            </div>
+            <div id="rfToggle" class="toggle" onclick="toggleRedFlag()"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-p btn-full">💾 Save Audit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CARDS TAB -->
+  <div id="tab-cards" class="tab">
+    <div class="asu">
+      <div class="sh mb4">
+        <h2 class="bold lg">Card Rolodex</h2>
+        <button class="btn btn-p" style="padding:9px 16px;font-size:13px;" onclick="openAddCard()">+ Add</button>
+      </div>
+      <div id="cardsGrid" class="cgrid"></div>
+    </div>
+  </div>
+
+  <!-- CURRENCY TAB -->
+  <div id="tab-currency" class="tab">
+    <div class="asu">
+      <div class="flex aic jb mb4">
+        <h2 class="bold lg">Currency Converter</h2>
+        <button class="btn btn-g xs" onclick="fetchLiveRates()">🔄 Live Rates</button>
+      </div>
+
+      <div class="card mb3">
+        <div class="cdisplay">
+          <div class="tm xs upper mb1">Chinese Yuan (RMB ¥)</div>
+          <div class="bignum tgg" id="convBase">¥ 0</div>
+        </div>
+        <div style="padding:0 16px 16px;">
+          <input type="number" id="currInput" placeholder="Enter RMB amount…" oninput="runConv()" style="text-align:center;font-size:22px;font-weight:700;padding:14px;">
+          <!-- Primary two: USD + home currency -->
+          <div class="cres-grid mt2">
+            <div class="cres"><div class="ccy">🇺🇸 USD</div><div class="amt" style="color:#4ade80;" id="convUSD">$0.00</div></div>
+            <div class="cres" id="homeResBox"><div class="ccy" id="homeResCcy">🇬🇭 GHS</div><div class="amt" style="color:var(--gold-l);" id="convHome">0.00</div></div>
+          </div>
+          <!-- Extra African currencies -->
+          <div class="cres-extra mt2" id="extraRates"></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:14px 16px;">
+        <div id="ratesList"></div>
+        <div class="divider"></div>
+        <div class="xs tm" id="ratesTs">Rates: saved / offline</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div id="tab-history" class="tab">
+    <div class="asu">
+      <div class="sh mb4">
+        <h2 class="bold lg">Audit History</h2>
+        <button class="btn btn-g xs" onclick="exportAllCSV()">📋 CSV</button>
+      </div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-in">
+    <button class="nb active" onclick="switchTab('home')" data-tab="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Suppliers</span>
+    </button>
+    <button class="nb" onclick="switchTab('cards')" data-tab="cards">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      <span>Cards</span>
+    </button>
+    <button class="nb" onclick="switchTab('currency')" data-tab="currency">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 000 4h4a2 2 0 010 4H8"/><line x1="12" y1="18" x2="12" y2="20"/><line x1="12" y1="6" x2="12" y2="4"/></svg>
+      <span>Convert</span>
+    </button>
+    <button class="nb" onclick="switchTab('history')" data-tab="history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== MODALS ===== -->
+
+<!-- ADD SUPPLIER -->
+<div id="supplierModal" class="mo">
+  <div class="mo-bg" onclick="closeModal('supplierModal')"></div>
+  <div class="ms">
+    <div class="mh"></div>
+    <h3 class="mt-modal">Add Supplier</h3>
+    <form id="supplierForm">
+      <div class="fl"><label class="flbl">Company Name *</label><input type="text" id="supName" placeholder="e.g. Guangzhou Textiles Co." required></div>
+      <div class="fl"><label class="flbl">City</label><input type="text" id="supCity" placeholder="e.g. Guangzhou, Yiwu, Shenzhen"></div>
+      <div class="fl"><label class="flbl">Products / Keywords</label><input type="text" id="supProduct" placeholder="e.g. cables, wire, connector"></div>
+      <div class="fl"><label class="flbl">Notes</label><textarea id="supNotes" rows="2" placeholder="Contact name, floor, booth number…" style="resize:none;"></textarea></div>
+      <button type="submit" class="btn btn-p btn-full mt3">Save Supplier</button>
+    </form>
+  </div>
+</div>
+
+<!-- ADD CARD -->
+<div id="cardModal" class="mo">
+  <div class="mo-bg" onclick="closeModal('cardModal')"></div>
+  <div class="ms">
+    <div class="mh"></div>
+    <h3 class="mt-modal">Add Business Card</h3>
+    <form id="cardForm">
+      <div class="fl">
+        <div class="uarea" onclick="document.getElementById('cardFile').click()" id="uarea">
+          <div class="uphint" id="uphint"><div class="ui">📷</div><p>Tap to take photo / upload</p></div>
+          <img id="cardPrev" style="display:none;width:100%;height:100%;object-fit:cover;">
+        </div>
+        <input type="file" id="cardFile" style="display:none;" accept="image/*" capture="environment" onchange="previewCard(this)">
+      </div>
+      <div class="fl"><label class="flbl">Company Name</label><input type="text" id="cardCompany" placeholder="Company or Contact Name"></div>
+      <div class="fl"><label class="flbl">Notes / Alias</label><input type="text" id="cardAlias" placeholder="What do they sell? Floor/booth?"></div>
+      <button type="submit" class="btn btn-p btn-full mt3">Save Card</button>
+    </form>
+  </div>
+</div>
+
+<!-- SHARE SUPPLIER MODAL -->
+<div id="shareModal" class="mo">
+  <div class="mo-bg" onclick="closeModal('shareModal')"></div>
+  <div class="ms">
+    <div class="mh"></div>
+    <h3 class="mt-modal">📤 Share Supplier</h3>
+    <p class="sm tm mb3">Send this text to a colleague. They paste it into KSI → Settings → Import Supplier.</p>
+    <div class="share-box" id="shareBox"></div>
+    <button class="btn btn-p btn-full mt3" onclick="copyShareText()">📋 Copy to Clipboard</button>
+    <button class="btn btn-g btn-full mt2" onclick="closeModal('shareModal')">Done</button>
+  </div>
+</div>
+
+<!-- INSTALL GUIDE -->
+<div id="installModal" class="mo">
+  <div class="mo-bg" onclick="closeModal('installModal')"></div>
+  <div class="ms">
+    <div class="mh"></div>
+    <h3 class="mt-modal">📲 Install KSI App</h3>
+    <p class="sm tm mb4">Add KSI to your home screen for the full offline experience.</p>
+    <div class="flex g2 mb4">
+      <div class="itab active" onclick="swInstTab('android',this)">🤖 Android</div>
+      <div class="itab" onclick="swInstTab('ios',this)">🍎 iPhone</div>
+    </div>
+    <div id="inst-android" class="ipane active">
+      <div class="srow"><div class="snum">1</div><div class="stxt"><p>Open in Chrome</p><p>Must be Google Chrome browser</p></div></div>
+      <div class="srow"><div class="snum">2</div><div class="stxt"><p>Tap the menu ⋮</p><p>Three dots in top-right corner</p></div></div>
+      <div class="srow"><div class="snum">3</div><div class="stxt"><p>Tap "Add to Home screen"</p><p>Or "Install app" — may appear automatically</p></div></div>
+      <div class="srow"><div class="snum">4</div><div class="stxt"><p>Tap "Install"</p><p>KSI appears on your home screen like a real app</p></div></div>
+    </div>
+    <div id="inst-ios" class="ipane">
+      <div class="srow"><div class="snum">1</div><div class="stxt"><p>Open in Safari</p><p>Must be Safari — Chrome on iOS cannot install PWAs</p></div></div>
+      <div class="srow"><div class="snum">2</div><div class="stxt"><p>Tap the Share button ⬆</p><p>Box with arrow at the bottom toolbar</p></div></div>
+      <div class="srow"><div class="snum">3</div><div class="stxt"><p>Scroll → "Add to Home Screen"</p><p>Has a plus icon — scroll the share sheet to find it</p></div></div>
+      <div class="srow"><div class="snum">4</div><div class="stxt"><p>Tap "Add" (top right)</p><p>Open KSI from your home screen for full offline use</p></div></div>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:rgba(212,175,55,.08);border-radius:12px;border:1px solid rgba(212,175,55,.2);">
+      <p style="font-size:12px;color:var(--gold-l);">💡 Once installed, KSI works fully offline — perfect for factory floors with no WiFi.</p>
+    </div>
+    <button class="btn btn-p btn-full mt3" onclick="closeModal('installModal')">Got it ✓</button>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div id="qrModal" class="mo">
+  <div class="mo-bg" onclick="closeModal('qrModal')"></div>
+  <div class="ms" style="text-align:center;">
+    <div class="mh"></div>
+    <h3 class="mt-modal">📡 Share KSI</h3>
+    <p class="sm tm mb4">Scan to open KSI on another phone, then install it from there.</p>
+    <div style="display:flex;justify-content:center;margin-bottom:12px;">
+      <div class="qrwrap"><canvas id="qrCanvas" width="200" height="200"></canvas></div>
+    </div>
+    <p class="qrurl" id="qrUrlTxt"></p>
+    <button class="btn btn-g wf mt3" onclick="copyShareUrl()">📋 Copy Link</button>
+    <button class="btn btn-p btn-full mt2" onclick="closeModal('qrModal')">Done</button>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div id="settingsPanel" class="sp">
+  <div class="flex aic jb mb4">
+    <h3 class="bold lg">Settings</h3>
+    <button class="btn btn-ic" onclick="closeSettings()">✕</button>
+  </div>
+
+  <!-- Agent Profile -->
+  <div class="card mb3" style="padding:16px;">
+    <h4 class="semi tg sm mb3">👤 Agent Profile</h4>
+    <div class="fl"><label class="flbl">Your Name</label><input type="text" id="setName" placeholder="Your name"></div>
+    <div class="fl"><label class="flbl">Home Currency</label>
+      <select id="setCurrency">
+        <option value="GHS">🇬🇭 Ghana — GHS</option>
+        <option value="NGN">🇳🇬 Nigeria — NGN</option>
+        <option value="KES">🇰🇪 Kenya — KES</option>
+        <option value="ZAR">🇿🇦 South Africa — ZAR</option>
+        <option value="ETB">🇪🇹 Ethiopia — ETB</option>
+        <option value="TZS">🇹🇿 Tanzania — TZS</option>
+        <option value="XOF">🌍 West Africa — XOF</option>
+        <option value="EGP">🇪🇬 Egypt — EGP</option>
+        <option value="UGX">🇺🇬 Uganda — UGX</option>
+        <option value="RWF">🇷🇼 Rwanda — RWF</option>
+        <option value="USD">🇺🇸 USA — USD</option>
+        <option value="EUR">🇪🇺 Europe — EUR</option>
+        <option value="GBP">🇬🇧 UK — GBP</option>
+      </select>
+    </div>
+    <button class="btn btn-g wf mt2" onclick="saveProfile()">Save Profile</button>
+  </div>
+
+  <!-- Import Supplier -->
+  <div class="card mb3" style="padding:16px;">
+    <h4 class="semi tg sm mb3">📥 Import Supplier</h4>
+    <textarea id="importSupText" rows="3" placeholder="Paste shared supplier code here…" style="resize:none;font-size:12px;font-family:monospace;"></textarea>
+    <button class="btn btn-g wf mt2" onclick="importSupplier()">Import</button>
+  </div>
+
+  <!-- Exchange Rates -->
+  <div class="card mb3" style="padding:16px;">
+    <h4 class="semi tg sm mb3">💱 Manual Rates (1 RMB →)</h4>
+    <div id="manualRatesFields"></div>
+    <button class="btn btn-g wf mt2" onclick="saveManualRates()">Save Rates</button>
+  </div>
+
+  <!-- Data -->
+  <div class="card mb3" style="padding:16px;">
+    <h4 class="semi tg sm mb3">💾 Data Management</h4>
+    <div class="sbar mb3">
+      <div class="slbl"><span>Storage Used</span><span id="storageUsed">—</span></div>
+      <div class="pbar"><div id="storageFill" class="pfill" style="width:0%;background:linear-gradient(90deg,#22c55e,#86efac);"></div></div>
+    </div>
+    <button class="btn btn-g wf mb2" onclick="exportDataJSON()">📦 Export Backup</button>
+    <button class="btn btn-g wf mb2" onclick="importData()">📂 Import Backup</button>
+    <input type="file" id="importFile" style="display:none;" accept=".json" onchange="handleImport(this)">
+    <button class="btn wf" style="background:rgba(220,38,38,.15);color:#ef4444;border:1px solid rgba(220,38,38,.3);border-radius:11px;padding:10px;font-size:13px;font-weight:600;" onclick="clearAllData()">🗑 Clear All Data</button>
+  </div>
+
+  <!-- About / Share -->
+  <div class="card" style="padding:16px;">
+    <h4 class="semi tg sm mb2">About KSI</h4>
+    <p class="xs tm">KSI v4.0 — Fully Offline</p>
+    <p class="xs tm mt2">Made by Nana Kwame Dickson</p>
+    <div class="divider"></div>
+    <button class="btn btn-g wf mb2" onclick="closeSettings();openInstallGuide()">📲 Install Guide</button>
+    <button class="btn btn-g wf" onclick="closeSettings();openQR()">📡 Share via QR Code</button>
+  </div>
+</div>
+
+<!-- INSTALL NUDGE -->
+<div id="nudge" class="nudge">
+  <div class="nudge-ic">K</div>
+  <div class="nudge-txt">
+    <p>Install KSI on your phone</p>
+    <p>Works fully offline — no internet needed</p>
+  </div>
+  <button class="btn btn-p" style="padding:8px 14px;font-size:12px;flex-shrink:0;" onclick="openInstallGuide()">Install</button>
+  <button style="background:none;border:none;color:#4B5563;font-size:18px;cursor:pointer;padding:4px;" onclick="dismissNudge()">✕</button>
+</div>
+
+<!-- TOAST -->
+<div id="toast"><span id="toastIco">✅</span><span id="toastMsg">Saved</span></div>
+
+<!-- FOOTER -->
+<div style="position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:9px;color:#374151;
+  letter-spacing:.15em;text-transform:uppercase;padding-bottom:calc(4px + env(safe-area-inset-bottom));
+  pointer-events:none;z-index:10;">Made by Nana Kwame Dickson</div>
+
+<script>
+// ================================================================
+// CONSTANTS & CURRENCIES
+// ================================================================
+const DB_KEY = 'ksi_v4';
+const PHOTO_PFX = 'ksi_ph_';
+
+const CURRENCIES = {
+  GHS:{ name:'Ghana Cedi',     sym:'GH₵', flag:'🇬🇭', fallback:1.62  },
+  NGN:{ name:'Nigerian Naira', sym:'₦',   flag:'🇳🇬', fallback:220   },
+  KES:{ name:'Kenyan Shilling',sym:'KSh', flag:'🇰🇪', fallback:18.8  },
+  ZAR:{ name:'S.A. Rand',      sym:'R',   flag:'🇿🇦', fallback:2.65  },
+  ETB:{ name:'Ethiopian Birr', sym:'Br',  flag:'🇪🇹', fallback:8.2   },
+  TZS:{ name:'Tanzanian Sh.',  sym:'TSh', flag:'🇹🇿', fallback:370   },
+  XOF:{ name:'CFA Franc',      sym:'CFA', flag:'🌍',  fallback:90    },
+  EGP:{ name:'Egyptian Pound', sym:'E£',  flag:'🇪🇬', fallback:4.8   },
+  UGX:{ name:'Ugandan Sh.',    sym:'USh', flag:'🇺🇬', fallback:535   },
+  RWF:{ name:'Rwandan Franc',  sym:'RF',  flag:'🇷🇼', fallback:200   },
+  USD:{ name:'US Dollar',      sym:'$',   flag:'🇺🇸', fallback:0.145 },
+  EUR:{ name:'Euro',           sym:'€',   flag:'🇪🇺', fallback:0.134 },
+  GBP:{ name:'British Pound',  sym:'£',   flag:'🇬🇧', fallback:0.115 },
+};
+
+// ================================================================
+// STATE
+// ================================================================
+let S = {
+  profile:  { name:'', currency:'GHS' },
+  suppliers: [],
+  audits:    [],
+  cards:     [],
+  rates:     {}, // CNY-based rates, keyed by currency code
+  ratesTs:   null,
+  currentAudit: { redFlag:false, checks:{}, customChecks:[], photos:[] }
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(DB_KEY);
+    if (raw) {
+      const d = JSON.parse(raw);
+      S.profile   = d.profile   || S.profile;
+      S.suppliers = d.suppliers || [];
+      S.audits    = d.audits    || [];
+      S.cards     = d.cards     || [];
+      S.rates     = d.rates     || {};
+      S.ratesTs   = d.ratesTs   || null;
+    }
+  } catch(e) { console.warn('Load err',e); }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(DB_KEY, JSON.stringify({
+      profile: S.profile,
+      suppliers: S.suppliers,
+      audits: S.audits,
+      cards: S.cards.map(c=>({...c,photo:null})),
+      rates: S.rates,
+      ratesTs: S.ratesTs
+    }));
+  } catch(e) { showToast('Storage full — please export & clear old data',true); }
+}
+
+function getRate(code) {
+  return S.rates[code] ?? CURRENCIES[code]?.fallback ?? 1;
+}
+
+function genId() { return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function esc(s)  { return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''; }
+function cap(s)  { return s?s.charAt(0).toUpperCase()+s.slice(1):''; }
+
+// Photo helpers
+function savePhoto(id, url) { try{if(url)localStorage.setItem(PHOTO_PFX+id,url);}catch(e){} }
+function loadPhoto(id)  { return localStorage.getItem(PHOTO_PFX+id)||null; }
+function delPhoto(id)   { localStorage.removeItem(PHOTO_PFX+id); }
+
+// ================================================================
+// CHECKLIST LOGIC
+// ================================================================
+const CL = {
+  electrical:{ kw:['cable','wire','socket','power','connector','llt','electrical'],
+    items:['Insulation Thickness Check','Tensile Strength Test','UL/CE Cert Verification','Copper Purity Test','Flame Retardancy Rating']},
+  event:{ kw:['tent','canopy','tablecloth','chandelier','event','decor'],
+    items:['Fabric Fire-Retardancy','Frame Oxidation Check','Waterproofing Test','Load Bearing Check','Colour Fastness']},
+  printing:{ kw:['printer','ink','dtf','uv','consumable','printing','sublimation'],
+    items:['Nozzle Alignment Test','Color Gamut Calibration','Ink Adhesion/Scratch Test','DPI Verification','Spares Availability']},
+  industrial:{ kw:['machine','roaster','tissue','industrial','processing','equipment'],
+    items:['Motor Brand / Warranty','Power Consumption (kW)','Safety Emergency Stops','Throughput (kg/hr)','Noise Level Check']},
+  furniture:{ kw:['school','desk','bed','furniture','shelf','cabinet'],
+    items:['Load-bearing Capacity','Edge Finishing / Safety','Material Density','Joinery Method','Surface Treatment']},
+  textile:{ kw:['fabric','textile','cloth','garment','uniform','bag','sewing'],
+    items:['GSM Weight Check','Colorfastness Test','Shrinkage Test','Thread Count','Seam Strength']},
+};
+const BASE = ['Confirm MOQ','Lead Times','Payment Terms','Business License Photo','Verify Factory vs Trading Co.'];
+
+function detectCat(txt) {
+  const t=(txt||'').toLowerCase();
+  for(const[cat,d] of Object.entries(CL)) if(d.kw.some(k=>t.includes(k))) return cat;
+  return 'general';
+}
+function genChecklist(txt) {
+  const cat=detectCat(txt);
+  return [...BASE,...(CL[cat]?.items||['Visual Quality Check','Packaging Standard','Sample Request'])];
+}
+
+// ================================================================
+// ONBOARDING
+// ================================================================
+let onbCurrent = 0;
+
+function showOnboarding() {
+  document.getElementById('onboarding').style.display='flex';
+}
+function hideOnboarding() {
+  document.getElementById('onboarding').style.display='none';
+}
+function onbNext() {
+  const nameEl = document.getElementById('onbName');
+  if(onbCurrent===1 && nameEl && !nameEl.value.trim()) {
+    nameEl.focus(); showToast('Please enter your name',true); return;
+  }
+  onbCurrent++;
+  updateOnbSteps();
+}
+function onbBack() {
+  if(onbCurrent>0) { onbCurrent--; updateOnbSteps(); }
+}
+function updateOnbSteps() {
+  document.querySelectorAll('.onb-step').forEach((s,i)=>s.classList.toggle('active',i===onbCurrent));
+}
+function finishOnboarding() {
+  const name = document.getElementById('onbName').value.trim();
+  const currency = document.getElementById('onbCurrency').value;
+  if(!name) { showToast('Please enter your name',true); return; }
+  S.profile.name = name;
+  S.profile.currency = currency;
+  saveState();
+  localStorage.setItem('ksi_onboarded','1');
+  hideOnboarding();
+  updateAll();
+  showToast('Welcome, '+name+' 👋');
+  // Show install nudge after onboarding
+  setTimeout(()=>{
+    if(!window.matchMedia('(display-mode: standalone)').matches && !localStorage.getItem('ksi_install_dismissed'))
+      document.getElementById('nudge').classList.add('show');
+  }, 2000);
+}
+
+// ================================================================
+// RENDERING
+// ================================================================
+function updateAll() {
+  updateStats(); updateCityChips(); renderSuppliers();
+  renderCards(); renderHistory(); updateCurrencyUI();
+  updateSettingsUI(); updateStorageUI();
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent  = S.suppliers.length;
+  document.getElementById('statFlags').textContent  = S.audits.filter(a=>a.redFlag).length;
+  document.getElementById('statAudits').textContent = S.audits.length;
+}
+
+function updateCityChips() {
+  const cities = [...new Set(S.suppliers.map(s=>s.city).filter(Boolean))];
+  const c = document.getElementById('cityChips');
+  const active = c.querySelector('.chip.active')?.dataset.city||'all';
+  c.innerHTML = `<button class="chip ${active==='all'?'active':''}" data-city="all" onclick="filterCity('all')">All</button>`;
+  cities.forEach(city=>{
+    c.innerHTML+=`<button class="chip ${active===city?'active':''}" data-city="${city}" onclick="filterCity('${city}')">${cap(city)}</button>`;
+  });
+}
+
+function renderSuppliers() {
+  const list = document.getElementById('supplierList');
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const ac = document.querySelector('.chip.active')?.dataset.city||'all';
+  let f = S.suppliers;
+  if(ac!=='all') f=f.filter(s=>s.city===ac);
+  if(q) f=f.filter(s=>(s.name||'').toLowerCase().includes(q)||(s.city||'').toLowerCase().includes(q)||(s.product||'').toLowerCase().includes(q));
+  if(!f.length){
+    list.innerHTML=`<div class="empty card"><span class="ei">🏭</span><p>No suppliers yet.</p><button class="btn btn-g mt3" onclick="openAddSupplier()">Add your first supplier</button></div>`;
+    return;
+  }
+  list.innerHTML = f.map(s=>{
+    const flagged = S.audits.some(a=>a.supplierId===s.id&&a.redFlag);
+    const ac2 = S.audits.filter(a=>a.supplierId===s.id).length;
+    return `
+    <div class="card sc ${flagged?'flag':''}">
+      <div class="si" onclick="startAudit('${s.id}')">
+        <div class="sn">${esc(s.name)}${flagged?'<span class="pill pill-r">⚑ FLAG</span>':''}</div>
+        ${s.notes?`<div class="snote">${esc(s.notes)}</div>`:''}
+        <div class="stags">
+          ${s.city?`<span class="tag tag-c">📍 ${cap(s.city)}</span>`:''}
+          <span class="tag tag-k">${s.category||'general'}</span>
+          ${ac2>0?`<span class="tag tag-a">✓ ${ac2} audit${ac2>1?'s':''}</span>`:''}
+        </div>
+      </div>
+      <div class="flex aic g2">
+        <button class="btn btn-g xs" onclick="event.stopPropagation();shareSupplier('${s.id}')" style="padding:6px 10px;">📤</button>
+        <button class="btn btn-d" onclick="event.stopPropagation();deleteSupplier('${s.id}')">🗑</button>
+        <span style="color:#374151;">›</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCity(city) {
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.chip[data-city="${city}"]`)?.classList.add('active');
+  renderSuppliers();
+}
+
+function renderCards() {
+  const g = document.getElementById('cardsGrid');
+  if(!S.cards.length){
+    g.innerHTML=`<div class="empty card" style="grid-column:span 2;"><span class="ei">🪪</span><p>No cards saved yet.</p></div>`;
+    return;
+  }
+  g.innerHTML = S.cards.map(c=>{
+    const ph = loadPhoto(c.id);
+    return `
+    <div class="card bc">
+      <div class="bc-img">
+        ${ph?`<img src="${ph}" alt="${esc(c.company)}" loading="lazy">`:`<span style="font-size:32px;opacity:.12;">🪪</span>`}
+        <button class="bc-del" onclick="deleteCard('${c.id}')">✕</button>
+      </div>
+      <div class="bc-body"><p>${esc(c.company)||'Unknown'}</p><p>${esc(c.alias)||''}</p></div>
+    </div>`;
+  }).join('');
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if(!S.audits.length){
+    list.innerHTML=`<div class="empty card"><span class="ei">🕐</span><p>No audits yet.</p></div>`;
+    return;
+  }
+  list.innerHTML=[...S.audits].reverse().map(a=>{
+    const sup = S.suppliers.find(s=>s.id===a.supplierId);
+    const tot = Object.keys(a.checks).length + (a.customChecks||[]).length;
+    const done = [...Object.values(a.checks),...(a.customChecks||[]).map(cc=>cc.checked)].filter(Boolean).length;
+    const pct = tot?Math.round((done/tot)*100):0;
+    const sc = pct>=80?'good':pct>=50?'':'bad';
+    const photoCount = (a.photos||[]).length;
+    return `
+    <div class="card hi ${a.redFlag?'flag':''}">
+      <div class="hdr2">
+        <div>
+          <p class="semi">${esc(sup?.name||'Unknown Supplier')}</p>
+          ${a.agentName?`<span class="agent-badge">👤 ${esc(a.agentName)}</span>`:''}
+          <p class="xs tm">${a.date} · ${a.time}</p>
+          ${a.gps?`<p class="xs tm">📍 ${a.gps}</p>`:''}
+          ${a.quotedPrice?`<p class="xs" style="color:var(--gold-l);">¥${a.quotedPrice} quoted</p>`:''}
+          <span class="sbadge ${sc}">${done}/${tot} checks · ${pct}%</span>
+          ${photoCount?`<span class="pill pill-b" style="margin-left:4px;">📷 ${photoCount}</span>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          ${a.redFlag?'<span class="pill pill-r">⚑ FLAG</span>':''}
+          <button class="btn btn-g xs" onclick="copyAuditText('${a.id}')">📋</button>
+          <button class="btn btn-d xs" onclick="deleteAudit('${a.id}')">🗑</button>
+        </div>
+      </div>
+      ${a.notes?`<p class="xs tm mt2" style="border-top:1px solid var(--border);padding-top:8px;">${esc(a.notes)}</p>`:''}
+      ${photoCount?`<div class="photo-strip mt2">${(a.photos||[]).map(pid=>{const ph=loadPhoto(pid);return ph?`<div class="photo-thumb"><img src="${ph}"></div>`:''}).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ================================================================
+// CURRENCY
+// ================================================================
+function updateCurrencyUI() {
+  const hc = S.profile.currency||'GHS';
+  const hInfo = CURRENCIES[hc]||CURRENCIES.GHS;
+
+  // Home currency box
+  document.getElementById('homeResCcy').textContent = `${hInfo.flag} ${hc}`;
+
+  // Extra currencies (all except USD and home currency)
+  const extras = Object.entries(CURRENCIES)
+    .filter(([code])=>code!=='USD'&&code!==hc&&code!=='EUR')
+    .slice(0,6);
+  document.getElementById('extraRates').innerHTML = extras.map(([code,info])=>`
+    <div class="cres-sm">
+      <div class="ccy">${info.flag} ${code}</div>
+      <div class="amt" id="conv_${code}" style="color:#e2e8f0;">0</div>
+    </div>`).join('');
+
+  // Rates list
+  document.getElementById('ratesList').innerHTML = Object.entries(CURRENCIES)
+    .map(([code,info])=>`
+    <div class="flex jb" style="padding:5px 0;border-bottom:1px solid rgba(42,45,53,.5);">
+      <span class="xs tm">1 RMB → ${info.flag} ${code}</span>
+      <span class="sm bold" id="rate_${code}">${getRate(code)}</span>
+    </div>`).join('');
+
+  document.getElementById('ratesTs').textContent = S.ratesTs
+    ? 'Rates updated: '+new Date(S.ratesTs).toLocaleDateString()
+    : 'Rates: saved / offline';
+
+  runConv();
+}
+
+function runConv() {
+  const val = parseFloat(document.getElementById('currInput').value)||0;
+  const hc = S.profile.currency||'GHS';
+  document.getElementById('convBase').textContent = `¥ ${val.toLocaleString()}`;
+  document.getElementById('convUSD').textContent  = `$${(val*getRate('USD')).toFixed(2)}`;
+  const hSym = CURRENCIES[hc]?.sym||'';
+  document.getElementById('convHome').textContent = `${hSym}${(val*getRate(hc)).toFixed(2)}`;
+
+  // Extra
+  document.querySelectorAll('[id^="conv_"]').forEach(el=>{
+    const code = el.id.replace('conv_','');
+    const info = CURRENCIES[code];
+    if(info) el.textContent = `${info.sym}${(val*getRate(code)).toFixed(2)}`;
+  });
+
+  // Update rate display
+  Object.keys(CURRENCIES).forEach(code=>{
+    const el = document.getElementById('rate_'+code);
+    if(el) el.textContent = getRate(code);
+  });
+}
+
+async function fetchLiveRates() {
+  if(!navigator.onLine){showToast('Offline — using saved rates',true);return;}
+  showToast('Fetching live rates…');
+  try {
+    const res = await fetch('https://open.er-api.com/v6/latest/CNY');
+    const data = await res.json();
+    if(data.result==='success'){
+      Object.keys(CURRENCIES).forEach(code=>{
+        if(data.rates[code]) S.rates[code]=+data.rates[code].toFixed(6);
+      });
+      S.ratesTs = Date.now();
+      saveState(); updateCurrencyUI();
+      showToast('All rates updated ✓');
+    }
+  } catch(e){showToast('Rate fetch failed',true);}
+}
+
+// Audit price live conversion
+document.getElementById('auditPrice').addEventListener('input',function(){
+  const val=parseFloat(this.value);
+  const hc=S.profile.currency||'GHS';
+  const hInfo=CURRENCIES[hc]||CURRENCIES.GHS;
+  const box=document.getElementById('auditPriceConv');
+  if(val>0){
+    box.style.display='block';
+    box.innerHTML=`<span class="xs tm">≈ </span>
+      <span style="font-size:13px;color:#4ade80;font-weight:700;">$${(val*getRate('USD')).toFixed(2)} USD</span>
+      <span class="xs tm"> / </span>
+      <span style="font-size:13px;color:var(--gold-l);font-weight:700;">${hInfo.sym}${(val*getRate(hc)).toFixed(2)} ${hc}</span>`;
+  } else { box.style.display='none'; }
+});
+
+// ================================================================
+// AUDIT FORM
+// ================================================================
+function startAudit(id){
+  const sup=S.suppliers.find(s=>s.id===id);
+  if(!sup) return;
+  document.getElementById('auditSupplierId').value=id;
+  document.getElementById('auditSupName').textContent=sup.name;
+
+  const checks=genChecklist((sup.name||'')+' '+(sup.product||''));
+  document.getElementById('checkCont').innerHTML=checks.map((txt,i)=>`
+    <div class="ci" onclick="toggleCheck(this,${i})">
+      <div class="cbox"></div><span style="font-size:13px;">${txt}</span>
+    </div>`).join('');
+
+  S.currentAudit={redFlag:false,checks:{},customChecks:[],photos:[]};
+  document.getElementById('rfToggle').classList.remove('on');
+  document.getElementById('auditNotes').value='';
+  document.getElementById('auditPrice').value='';
+  document.getElementById('auditPriceConv').style.display='none';
+  document.getElementById('customChecksWrap').style.display='none';
+  document.getElementById('customToggleLbl').textContent='＋ Add custom checklist items';
+  document.getElementById('customChecksList').innerHTML='';
+  renderPhotoStrip();
+  updateCheckProg();
+  const n=new Date();
+  document.getElementById('auditDate').value=n.toLocaleDateString();
+  document.getElementById('auditTime').value=n.toLocaleTimeString();
+  switchTab('audit');
+}
+
+function toggleCheck(el,idx){
+  el.classList.toggle('ck');
+  S.currentAudit.checks[idx]=el.classList.contains('ck');
+  updateCheckProg();
+}
+function updateCheckProg(){
+  const total=document.querySelectorAll('#checkCont .ci').length+(S.currentAudit.customChecks?.length||0);
+  const std=document.querySelectorAll('#checkCont .ci.ck').length;
+  const cust=(S.currentAudit.customChecks||[]).filter(c=>c.checked).length;
+  const done=std+cust;
+  document.getElementById('checkProg').textContent=`${done} / ${total}`;
+  document.getElementById('pFill').style.width=total?`${(done/total)*100}%`:'0%';
+}
+function toggleRedFlag(){
+  S.currentAudit.redFlag=!S.currentAudit.redFlag;
+  document.getElementById('rfToggle').classList.toggle('on');
+}
+
+// Custom checklist items
+let customVisible=false;
+function toggleCustomChecks(){
+  customVisible=!customVisible;
+  document.getElementById('customChecksWrap').style.display=customVisible?'block':'none';
+  document.getElementById('customToggleLbl').textContent=customVisible?'− Hide custom items':'＋ Add custom checklist items';
+}
+function addCustomCheck(){
+  const inp=document.getElementById('newCheckInput');
+  const txt=inp.value.trim();
+  if(!txt) return;
+  const idx=S.currentAudit.customChecks.length;
+  S.currentAudit.customChecks.push({text:txt,checked:false});
+  inp.value='';
+  renderCustomChecks();
+  updateCheckProg();
+}
+function renderCustomChecks(){
+  const list=document.getElementById('customChecksList');
+  list.innerHTML=S.currentAudit.customChecks.map((cc,i)=>`
+    <div class="custom-ci">
+      <div class="cbox ${cc.checked?'ck':''}" onclick="toggleCustomCheck(${i})" style="cursor:pointer;flex-shrink:0;">
+        ${cc.checked?'<span style="color:var(--bg);font-size:13px;font-weight:800;">✓</span>':''}
+      </div>
+      <span>${esc(cc.text)}</span>
+      <button onclick="removeCustomCheck(${i})">✕</button>
+    </div>`).join('');
+}
+function toggleCustomCheck(i){
+  S.currentAudit.customChecks[i].checked=!S.currentAudit.customChecks[i].checked;
+  renderCustomChecks(); updateCheckProg();
+}
+function removeCustomCheck(i){
+  S.currentAudit.customChecks.splice(i,1);
+  renderCustomChecks(); updateCheckProg();
+}
+
+// Audit Photos
+function addAuditPhoto(input){
+  if(!input.files?.length) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const id='ap_'+genId();
+    savePhoto(id,e.target.result);
+    S.currentAudit.photos.push(id);
+    renderPhotoStrip();
+    input.value='';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function renderPhotoStrip(){
+  const strip=document.getElementById('auditPhotoStrip');
+  const photos=S.currentAudit.photos||[];
+  document.getElementById('photoCount').textContent=photos.length+' photo'+(photos.length!==1?'s':'');
+  strip.innerHTML=photos.map((pid,i)=>{
+    const ph=loadPhoto(pid);
+    return ph?`<div class="photo-thumb">
+      <img src="${ph}" loading="lazy">
+      <button class="del-ph" onclick="removeAuditPhoto(${i})">✕</button>
+    </div>`:'';
+  }).join('');
+  strip.innerHTML+=`<div class="add-photo" onclick="document.getElementById('auditPhotoInput').click()"><span>📷</span><span>Add</span></div>`;
+}
+function removeAuditPhoto(i){
+  const pid=S.currentAudit.photos[i];
+  delPhoto(pid);
+  S.currentAudit.photos.splice(i,1);
+  renderPhotoStrip();
+}
+
+// GPS
+function captureGPS(){
+  if(!navigator.geolocation){showToast('GPS not available',true);return;}
+  navigator.geolocation.getCurrentPosition(
+    p=>{document.getElementById('auditGPS').value=`${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;showToast('GPS captured');},
+    ()=>showToast('GPS failed or denied',true)
+  );
+}
+
+// Audit form submit
+document.getElementById('auditForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const audit={
+    id:genId(),
+    supplierId:document.getElementById('auditSupplierId').value,
+    agentName:S.profile.name||'',
+    date:document.getElementById('auditDate').value,
+    time:document.getElementById('auditTime').value,
+    gps:document.getElementById('auditGPS').value,
+    notes:document.getElementById('auditNotes').value,
+    quotedPrice:document.getElementById('auditPrice').value||null,
+    redFlag:S.currentAudit.redFlag,
+    checks:{...S.currentAudit.checks},
+    customChecks:S.currentAudit.customChecks.map(cc=>({...cc})),
+    photos:[...S.currentAudit.photos],
+    timestamp:Date.now()
+  };
+  S.audits.push(audit);
+  saveState(); updateAll();
+  showToast('Audit saved ✓');
+  switchTab('history');
+});
+
+// Supplier form
+document.getElementById('supplierForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('supName').value.trim();
+  if(!name) return;
+  S.suppliers.push({id:genId(),name,city:document.getElementById('supCity').value.trim().toLowerCase(),
+    product:document.getElementById('supProduct').value.trim(),notes:document.getElementById('supNotes').value.trim(),
+    category:detectCat(name+' '+document.getElementById('supProduct').value)});
+  saveState(); updateAll(); closeModal('supplierModal');
+  showToast('Supplier added ✓');
+  document.getElementById('supplierForm').reset();
+});
+
+// Card form
+document.getElementById('cardForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const id=genId();
+  const img=document.getElementById('cardPrev');
+  const photoData=img.style.display!=='none'?img.src:null;
+  S.cards.push({id,company:document.getElementById('cardCompany').value.trim(),alias:document.getElementById('cardAlias').value.trim()});
+  if(photoData) savePhoto(id,photoData);
+  saveState(); renderCards(); closeModal('cardModal');
+  showToast('Card saved ✓');
+  document.getElementById('cardForm').reset();
+  img.src='';img.style.display='none';
+  document.getElementById('uphint').style.display='flex';
+  updateStorageUI();
+});
+
+function previewCard(input){
+  if(!input.files?.length) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('cardPrev');
+    img.src=e.target.result;img.style.display='block';
+    document.getElementById('uphint').style.display='none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ================================================================
+// SHARE SUPPLIER
+// ================================================================
+function shareSupplier(id){
+  const sup=S.suppliers.find(s=>s.id===id);
+  if(!sup) return;
+  const payload=JSON.stringify({ksi_supplier:true,v:1,data:{...sup,id:genId()}});
+  const encoded=btoa(unescape(encodeURIComponent(payload)));
+  document.getElementById('shareBox').textContent=encoded;
+  closeModal('supplierModal');
+  document.getElementById('shareModal').classList.add('open');
+}
+
+function copyShareText(){
+  const txt=document.getElementById('shareBox').textContent;
+  navigator.clipboard.writeText(txt).then(()=>showToast('Copied! Send to colleague ✓'))
+    .catch(()=>showToast('Select the text above and copy manually',true));
+}
+
+function importSupplier(){
+  const txt=document.getElementById('importSupText').value.trim();
+  if(!txt){showToast('Paste a supplier code first',true);return;}
+  try{
+    const decoded=decodeURIComponent(escape(atob(txt)));
+    const obj=JSON.parse(decoded);
+    if(!obj.ksi_supplier) throw new Error('Not a KSI supplier code');
+    const sup={...obj.data,id:genId()};
+    S.suppliers.push(sup);
+    saveState(); updateAll();
+    document.getElementById('importSupText').value='';
+    showToast(`Imported: ${sup.name} ✓`);
+    closeSettings();
+  }catch(e){showToast('Invalid supplier code',true);}
+}
+
+// ================================================================
+// EXPORT / IMPORT
+// ================================================================
+function copyAuditText(auditId){
+  const a=S.audits.find(x=>x.id===auditId);
+  const sup=S.suppliers.find(s=>s.id===a?.supplierId);
+  const checks=genChecklist((sup?.name||'')+' '+(sup?.product||''));
+  const customChecks=a?.customChecks||[];
+  const done=[...Object.values(a.checks),...customChecks.map(c=>c.checked)].filter(Boolean).length;
+  const total=checks.length+customChecks.length;
+  let t=`KSI AUDIT REPORT\n${'='.repeat(30)}\n`;
+  t+=`Agent: ${a.agentName||'Unknown'}\n`;
+  t+=`Supplier: ${sup?.name||'Unknown'}\nCity: ${sup?.city||'N/A'}\n`;
+  t+=`Date: ${a.date}  Time: ${a.time}\n`;
+  t+=`GPS: ${a.gps||'N/A'}\n`;
+  if(a.quotedPrice) t+=`Price Quoted: ¥${a.quotedPrice}\n`;
+  t+=`Red Flag: ${a.redFlag?'⚑ YES':'No'}\n\n`;
+  t+=`CHECKLIST (${done}/${total}):\n`;
+  checks.forEach((item,i)=>{t+=`${a.checks[i]?'[✓]':'[ ]'} ${item}\n`;});
+  customChecks.forEach(cc=>{t+=`${cc.checked?'[✓]':'[ ]'} ${cc.text} [custom]\n`;});
+  if(a.notes) t+=`\nNOTES:\n${a.notes}\n`;
+  if((a.photos||[]).length) t+=`\nPhotos: ${a.photos.length} attached\n`;
+  t+=`\nGenerated by KSI — Made by Nana Kwame Dickson`;
+  navigator.clipboard.writeText(t).then(()=>showToast('Copied to clipboard ✓'))
+    .catch(()=>{const w=window.open('','_blank');w.document.write('<pre style="font-family:monospace;padding:20px;">'+t+'</pre>');});
+}
+
+function exportAllCSV(){
+  if(!S.audits.length){showToast('No audits to export',true);return;}
+  const rows=[['Agent','Supplier','City','Date','Time','GPS','Score','RedFlag','Price(RMB)','Notes']];
+  S.audits.forEach(a=>{
+    const sup=S.suppliers.find(s=>s.id===a.supplierId);
+    const total=Object.keys(a.checks).length+(a.customChecks||[]).length;
+    const done=[...Object.values(a.checks),...(a.customChecks||[]).map(c=>c.checked)].filter(Boolean).length;
+    rows.push([`"${a.agentName||''}"`,`"${sup?.name||''}"`,`"${sup?.city||''}"`,
+      a.date,a.time,`"${a.gps||''}"`,`${done}/${total}`,a.redFlag?'YES':'No',
+      a.quotedPrice||'',`"${(a.notes||'').replace(/"/g,'""')}"`]);
+  });
+  dlFile('KSI_Audits.csv',rows.map(r=>r.join(',')).join('\n'),'text/csv');
+  showToast('CSV exported ✓');
+}
+
+function exportDataJSON(){
+  const data={...S,cards:S.cards.map(c=>({...c,photo:loadPhoto(c.id)}))};
+  dlFile('ksi_backup.json',JSON.stringify(data,null,2),'application/json');
+  showToast('Backup exported ✓');
+}
+
+function importData(){document.getElementById('importFile').click();}
+function handleImport(input){
+  if(!input.files?.length) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      if(!confirm(`Import ${d.suppliers?.length||0} suppliers and ${d.audits?.length||0} audits? This replaces current data.`)) return;
+      S.profile=d.profile||S.profile;
+      S.suppliers=d.suppliers||[];
+      S.audits=d.audits||[];
+      S.cards=(d.cards||[]).map(c=>{const{photo,...rest}=c;if(photo)savePhoto(c.id,photo);return rest;});
+      S.rates=d.rates||{};S.ratesTs=d.ratesTs||null;
+      saveState();updateAll();showToast('Data imported ✓');
+    }catch(e){showToast('Invalid backup file',true);}
+  };
+  reader.readAsText(input.files[0]);
+}
+
+function dlFile(name,content,type){
+  const blob=new Blob([content],{type});
+  const url=URL.createObjectURL(blob);
+  Object.assign(document.createElement('a'),{href:url,download:name}).click();
+  URL.revokeObjectURL(url);
+}
+
+// ================================================================
+// SETTINGS UI
+// ================================================================
+function updateSettingsUI(){
+  document.getElementById('setName').value=S.profile.name||'';
+  document.getElementById('setCurrency').value=S.profile.currency||'GHS';
+  // Manual rates fields
+  const mrf=document.getElementById('manualRatesFields');
+  mrf.innerHTML=Object.entries(CURRENCIES).map(([code,info])=>`
+    <div class="flex aic jb mb2">
+      <span class="xs tm">${info.flag} ${code}</span>
+      <input type="number" step="0.0001" id="mr_${code}" value="${getRate(code)}"
+        style="width:100px;text-align:right;padding:6px 10px;font-size:13px;">
+    </div>`).join('');
+}
+
+function saveProfile(){
+  S.profile.name=document.getElementById('setName').value.trim();
+  S.profile.currency=document.getElementById('setCurrency').value;
+  saveState();updateAll();showToast('Profile saved ✓');
+}
+
+function saveManualRates(){
+  Object.keys(CURRENCIES).forEach(code=>{
+    const el=document.getElementById('mr_'+code);
+    if(el){const v=parseFloat(el.value);if(!isNaN(v)&&v>0)S.rates[code]=v;}
+  });
+  S.ratesTs=null;
+  saveState();updateCurrencyUI();showToast('Rates saved ✓');
+}
+
+function updateStorageUI(){
+  const used=Object.keys(localStorage).reduce((a,k)=>a+(localStorage.getItem(k)||'').length,0);
+  const kb=(used/1024).toFixed(1);
+  const pct=Math.min(100,(used/(5*1024*1024))*100);
+  document.getElementById('storageUsed').textContent=kb+' KB / ~5 MB';
+  document.getElementById('storageFill').style.width=pct+'%';
+  if(pct>80)document.getElementById('storageFill').style.background='linear-gradient(90deg,#f59e0b,#ef4444)';
+}
+
+function clearAllData(){
+  if(!confirm('Delete ALL data? This cannot be undone.')) return;
+  Object.keys(localStorage).filter(k=>k.startsWith(PHOTO_PFX)||k===DB_KEY).forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
+// ================================================================
+// TABS, MODALS, TOAST
+// ================================================================
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openAddSupplier(){document.getElementById('supplierModal').classList.add('open');}
+function openAddCard(){document.getElementById('cardModal').classList.add('open');}
+function openSettings(){document.getElementById('settingsPanel').classList.add('open');updateSettingsUI();updateStorageUI();}
+function closeSettings(){document.getElementById('settingsPanel').classList.remove('open');}
+
+let toastT;
+function showToast(msg,err=false){
+  const t=document.getElementById('toast');
+  document.getElementById('toastIco').textContent=err?'⚠️':'✅';
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.toggle('err',err);t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// Deletes
+function deleteSupplier(id){
+  if(!confirm('Delete this supplier?')) return;
+  S.suppliers=S.suppliers.filter(s=>s.id!==id);
+  saveState();updateAll();showToast('Supplier deleted');
+}
+function deleteCard(id){
+  if(!confirm('Delete this card?')) return;
+  S.cards=S.cards.filter(c=>c.id!==id);delPhoto(id);
+  saveState();renderCards();updateStorageUI();showToast('Card deleted');
+}
+function deleteAudit(id){
+  if(!confirm('Delete this audit?')) return;
+  const a=S.audits.find(x=>x.id===id);
+  if(a)(a.photos||[]).forEach(delPhoto);
+  S.audits=S.audits.filter(x=>x.id!==id);
+  saveState();updateAll();showToast('Audit deleted');
+}
+
+// ================================================================
+// ONLINE / OFFLINE
+// ================================================================
+function updateOnlineStatus(){
+  const on=navigator.onLine;
+  document.getElementById('sdot').classList.toggle('off',!on);
+  document.getElementById('stxt').textContent=on?'Online':'Offline';
+  document.getElementById('ob-banner').classList.toggle('show',!on);
+}
+window.addEventListener('online',()=>{updateOnlineStatus();fetchLiveRates();});
+window.addEventListener('offline',updateOnlineStatus);
+
+// ================================================================
+// INSTALL PWA
+// ================================================================
+let dip=null;
+function setupInstall(){
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();dip=e;
+    if(!window.matchMedia('(display-mode: standalone)').matches&&!localStorage.getItem('ksi_install_dismissed'))
+      setTimeout(()=>document.getElementById('nudge').classList.add('show'),3000);
+  });
+  window.addEventListener('appinstalled',()=>{
+    document.getElementById('nudge').classList.remove('show');showToast('KSI installed! 🎉');dip=null;
+  });
+  const iOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  if(iOS&&!standalone&&!localStorage.getItem('ksi_install_dismissed'))
+    setTimeout(()=>document.getElementById('nudge').classList.add('show'),3000);
+}
+function openInstallGuide(){
+  if(dip){dip.prompt();dip.userChoice.then(()=>dip=null);return;}
+  document.getElementById('installModal').classList.add('open');
+  dismissNudge();
+}
+function dismissNudge(){
+  document.getElementById('nudge').classList.remove('show');
+  localStorage.setItem('ksi_install_dismissed','1');
+}
+function swInstTab(p,el){
+  document.querySelectorAll('.itab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ipane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');document.getElementById('inst-'+p).classList.add('active');
+}
+
+// ================================================================
+// QR CODE
+// ================================================================
+function openQR(){
+  document.getElementById('qrModal').classList.add('open');
+  const url=window.location.href.split('?')[0].split('#')[0];
+  document.getElementById('qrUrlTxt').textContent=url;
+  generateQR(url);
+}
+function copyShareUrl(){
+  const url=window.location.href.split('?')[0].split('#')[0];
+  navigator.clipboard.writeText(url).then(()=>showToast('Link copied!')).catch(()=>showToast('See URL below',true));
+}
+function generateQR(text){
+  const canvas=document.getElementById('qrCanvas'),ctx=canvas.getContext('2d');
+  const qr=buildQRMatrix(text),size=qr.length,cs=Math.floor(200/(size+4)),off=Math.floor((200-cs*size)/2);
+  canvas.width=canvas.height=200;
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,200,200);
+  ctx.fillStyle='#000';
+  for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(qr[r][c])ctx.fillRect(off+c*cs,off+r*cs,cs,cs);
+}
+function buildQRMatrix(url){
+  const N=29,M=Array.from({length:N},()=>new Array(N).fill(null));
+  function df(row,col){for(let r=0;r<7;r++)for(let c=0;c<7;c++)M[row+r][col+c]=(r===0||r===6||c===0||c===6||(r>=2&&r<=4&&c>=2&&c<=4));}
+  df(0,0);df(0,N-7);df(N-7,0);
+  for(let i=0;i<8;i++){const s=(r,c)=>{if(r>=0&&r<N&&c>=0&&c<N&&M[r][c]===null)M[r][c]=false;};s(7,i);s(i,7);s(7,N-1-i);s(i,N-8);s(N-8,i);s(N-1-i,7);}
+  for(let i=8;i<N-8;i++){if(M[6][i]===null)M[6][i]=(i%2===0);if(M[i][6]===null)M[i][6]=(i%2===0);}
+  M[N-8][8]=true;
+  const fp=[0,1,2,3,4,5,7,8];fp.forEach(i=>{if(M[8][i]===null)M[8][i]=false;if(M[i][8]===null)M[i][8]=false;if(M[8][N-1-i]===null)M[8][N-1-i]=false;if(M[N-1-i][8]===null)M[N-1-i][8]=false;});
+  const ub=[];for(let i=0;i<Math.min(url.length,50);i++)ub.push(url.charCodeAt(i));
+  const bits=[];bits.push(0,1,0,0);const len=ub.length;for(let i=7;i>=0;i--)bits.push((len>>i)&1);
+  ub.forEach(b=>{for(let i=7;i>=0;i--)bits.push((b>>i)&1);});
+  for(let i=0;i<4&&bits.length<224;i++)bits.push(0);
+  while(bits.length%8!==0)bits.push(0);
+  const pb=[0b11101100,0b00010001];let p=0;
+  while(bits.length<224){for(let i=7;i>=0;i--)bits.push((pb[p%2]>>i)&1);p++;}
+  let bi=0,up=true;
+  for(let col=N-1;col>=0;col-=2){
+    if(col===6)col--;
+    for(let ri=0;ri<N;ri++){
+      const row=up?N-1-ri:ri;
+      [col,col-1].forEach(c=>{if(c>=0&&M[row][c]===null){M[row][c]=bi<bits.length?bits[bi++]===1:false;}});
+    }
+    up=!up;
+  }
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(M[r][c]===null)M[r][c]=false;
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    const inf=(r<9&&c<9)||(r<9&&c>N-9)||(r>N-9&&c<9),it=r===6||c===6;
+    if(!inf&&!it&&(r+c)%2===0)M[r][c]=!M[r][c];
+  }
+  return M;
+}
+
+// ================================================================
+// SERVICE WORKER
+// ================================================================
+function registerSW(){
+  if('serviceWorker'in navigator)
+    navigator.serviceWorker.register('./sw.js')
+      .then(r=>console.log('SW ready',r.scope))
+      .catch(e=>console.warn('SW failed',e));
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  loadState();
+  // Show onboarding for first-time users
+  if(!localStorage.getItem('ksi_onboarded')){
+    showOnboarding();
+  } else {
+    updateAll();
+  }
+  updateOnlineStatus();
+  registerSW();
+  setupInstall();
+  if(navigator.onLine) fetchLiveRates();
+});
+</script>
+</body>
+</html>
